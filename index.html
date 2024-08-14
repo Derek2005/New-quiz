@@ -15,6 +15,7 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
+            overflow: hidden;
         }
         h1 {
             color: #333;
@@ -26,9 +27,20 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             max-width: 600px;
             width: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .container.show {
+            opacity: 1;
+            transform: translateY(0);
         }
         .question {
             margin-bottom: 20px;
+            display: none;
+        }
+        .question.show {
+            display: block;
         }
         .question p {
             font-size: 18px;
@@ -36,6 +48,13 @@
         }
         .question input {
             margin-right: 10px;
+        }
+        .question label {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .question label:hover {
+            color: #007BFF;
         }
         #submit {
             background-color: #007BFF;
@@ -45,6 +64,7 @@
             cursor: pointer;
             border-radius: 5px;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
         #submit:hover {
             background-color: #0056b3;
@@ -53,6 +73,20 @@
             margin-top: 20px;
             font-size: 20px;
             font-weight: bold;
+            display: none;
+        }
+        #progress-bar {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        #progress-bar-fill {
+            height: 10px;
+            background-color: #007BFF;
+            width: 0;
+            transition: width 0.3s ease;
         }
         @media (max-width: 600px) {
             .container {
@@ -63,65 +97,226 @@
 </head>
 <body>
     <div class="container">
+        <div id="progress-bar">
+            <div id="progress-bar-fill"></div>
+        </div>
+
         <h1>SQL Concepts Quiz</h1>
         
         <form id="quizForm">
-            <div class="question">
-                <p>1. What is data integrity, and why is it important in a database?</p>
-                <input type="radio" name="q1" value="A"> A) Ensures that data is consistent and reliable over time.<br>
-                <input type="radio" name="q1" value="B"> B) Prevents unauthorized access to data.<br>
-                <input type="radio" name="q1" value="C"> C) Helps with data compression.<br>
-                <input type="radio" name="q1" value="D"> D) Manages user permissions.<br>
+            <div class="question show">
+                <p>1. What is data integrity and why is it important in a database?</p>
+                <label><input type="radio" name="q1" value="A"> A) It ensures data accuracy and consistency.</label><br>
+                <label><input type="radio" name="q1" value="B"> B) It allows multiple users to access the same data.</label><br>
+                <label><input type="radio" name="q1" value="C"> C) It is used to back up data.</label><br>
+                <label><input type="radio" name="q1" value="D"> D) It is used to encrypt data.</label><br>
             </div>
             
             <div class="question">
-                <p>2. Explain referential integrity and its role in a relational database.</p>
-                <input type="radio" name="q2" value="A"> A) Allows duplicate records in a table.<br>
-                <input type="radio" name="q2" value="B"> B) Ensures that relationships between tables remain consistent.<br>
-                <input type="radio" name="q2" value="C"> C) Controls user access to data.<br>
-                <input type="radio" name="q2" value="D"> D) Automatically backs up the database.<br>
+                <p>2. Explain referential integrity and how it is maintained in a relational database.</p>
+                <label><input type="radio" name="q2" value="A"> A) Ensures relationships between tables remain consistent using foreign keys.</label><br>
+                <label><input type="radio" name="q2" value="B"> B) Allows tables to reference other tables without restrictions.</label><br>
+                <label><input type="radio" name="q2" value="C"> C) Controls user access to the database.</label><br>
+                <label><input type="radio" name="q2" value="D"> D) Automatically deletes unused data.</label><br>
             </div>
-            
+
             <div class="question">
-                <p>3. What is entity integrity, and how is it enforced?</p>
-                <input type="radio" name="q3" value="A"> A) Prevents duplicate entries in a column.<br>
-                <input type="radio" name="q3" value="B"> B) Ensures each row in a table has a unique, non-null primary key.<br>
-                <input type="radio" name="q3" value="C"> C) Automatically updates foreign keys.<br>
-                <input type="radio" name="q3" value="D"> D) Limits the number of columns in a table.<br>
+                <p>3. What is entity integrity and how is it enforced in a database?</p>
+                <label><input type="radio" name="q3" value="A"> A) Ensures each table has a unique name.</label><br>
+                <label><input type="radio" name="q3" value="B"> B) Ensures each row has a unique, non-null primary key.</label><br>
+                <label><input type="radio" name="q3" value="C"> C) Ensures each column has a unique name.</label><br>
+                <label><input type="radio" name="q3" value="D"> D) Ensures all tables have a foreign key.</label><br>
             </div>
 
-            <!-- Add more questions as needed -->
+            <div class="question">
+                <p>4. List and describe the three types of cardinality in an ERD.</p>
+                <label><input type="radio" name="q4" value="A"> A) One-to-One, One-to-Many, Many-to-Many.</label><br>
+                <label><input type="radio" name="q4" value="B"> B) Many-to-One, One-to-One, Many-to-Few.</label><br>
+                <label><input type="radio" name="q4" value="C"> C) Primary, Foreign, Composite.</label><br>
+                <label><input type="radio" name="q4" value="D"> D) Static, Dynamic, Hybrid.</label><br>
+            </div>
 
-            <button type="button" id="submit">Submit</button>
+            <div class="question">
+                <p>5. What is the correct order of execution for SQL statements?</p>
+                <label><input type="radio" name="q5" value="A"> A) SELECT, FROM, WHERE, ORDER BY.</label><br>
+                <label><input type="radio" name="q5" value="B"> B) FROM, WHERE, SELECT, ORDER BY.</label><br>
+                <label><input type="radio" name="q5" value="C"> C) FROM, SELECT, WHERE, ORDER BY.</label><br>
+                <label><input type="radio" name="q5" value="D"> D) ORDER BY, FROM, WHERE, SELECT.</label><br>
+            </div>
+
+            <div class="question">
+                <p>6. Explain the difference between the DROP TABLE and TRUNCATE TABLE commands.</p>
+                <label><input type="radio" name="q6" value="A"> A) DROP TABLE deletes the entire table; TRUNCATE TABLE deletes only the data.</label><br>
+                <label><input type="radio" name="q6" value="B"> B) TRUNCATE TABLE deletes the entire table; DROP TABLE deletes only the data.</label><br>
+                <label><input type="radio" name="q6" value="C"> C) DROP TABLE backs up the table; TRUNCATE TABLE restores it.</label><br>
+                <label><input type="radio" name="q6" value="D"> D) Both commands delete only the data.</label><br>
+            </div>
+
+            <div class="question">
+                <p>7. What is a foreign key and how does it function in a database?</p>
+                <label><input type="radio" name="q7" value="A"> A) A foreign key links two tables together and maintains referential integrity.</label><br>
+                <label><input type="radio" name="q7" value="B"> B) A foreign key is used to encrypt data.</label><br>
+                <label><input type="radio" name="q7" value="C"> C) A foreign key ensures data accuracy within a single table.</label><br>
+                <label><input type="radio" name="q7" value="D"> D) A foreign key deletes data from two tables.</label><br>
+            </div>
+
+            <div class="question">
+                <p>8. What is a subquery and where can it be used in SQL?</p>
+                <label><input type="radio" name="q8" value="A"> A) A subquery is a query within another query; used in SELECT, FROM, JOIN, WHERE.</label><br>
+                <label><input type="radio" name="q8" value="B"> B) A subquery is used to back up data.</label><br>
+                <label><input type="radio" name="q8" value="C"> C) A subquery is used only in INSERT statements.</label><br>
+                <label><input type="radio" name="q8" value="D"> D) A subquery is a query that deletes data.</label><br>
+            </div>
+
+            <div class="question">
+                <p>9. What are the sub-languages of SQL?</p>
+                <label><input type="radio" name="q9" value="A"> A) DDL, DML, DCL, TCL.</label><br>
+                <label><input type="radio" name="q9" value="B"> B) SQL, NoSQL, XML, JSON.</label><br>
+                <label><input type="radio" name="q9" value="C"> C) SELECT, INSERT, UPDATE, DELETE.</label><br>
+                <label><input type="radio" name="q9" value="D"> D) CSV, JSON, SQL, XML.</label><br>
+            </div>
+
+            <div class="question">
+                <p>10. What is an Entity Relationship Diagram (ERD) and how is it used?</p>
+                <label><input type="radio" name="q10" value="A"> A) An ERD is a visual representation of relationships between entities in a database.</label><br>
+                <label><input type="radio" name="q10" value="B"> B) An ERD is used to encrypt data.</label><br>
+                <label><input type="radio" name="q10" value="C"> C) An ERD is a database backup tool.</label><br>
+                <label><input type="radio" name="q10" value="D"> D) An ERD is a data extraction tool.</label><br>
+            </div>
+
+            <div class="question">
+                <p>11. What are the different types of joins in SQL?</p>
+                <label><input type="radio" name="q11" value="A"> A) INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN.</label><br>
+                <label><input type="radio" name="q11" value="B"> B) SELECT, INSERT, UPDATE, DELETE.</label><br>
+                <label><input type="radio" name="q11" value="C"> C) PRIMARY JOIN, FOREIGN JOIN, COMPOSITE JOIN.</label><br>
+                <label><input type="radio" name="q11" value="D"> D) SIMPLE JOIN, COMPLEX JOIN, MULTI JOIN.</label><br>
+            </div>
+
+            <div class="question">
+                <p>12. What is a trigger in SQL and how is it used?</p>
+                <label><input type="radio" name="q12" value="A"> A) A trigger is a procedure that automatically runs when specific events occur.</label><br>
+                <label><input type="radio" name="q12" value="B"> B) A trigger is a type of subquery.</label><br>
+                <label><input type="radio" name="q12" value="C"> C) A trigger is used to restore data.</label><br>
+                <label><input type="radio" name="q12" value="D"> D) A trigger is a data backup tool.</label><br>
+            </div>
+
+            <div class="question">
+                <p>13. Explain the purpose of TRY CATCH in SQL.</p>
+                <label><input type="radio" name="q13" value="A"> A) TRY CATCH is used to handle errors in SQL.</label><br>
+                <label><input type="radio" name="q13" value="B"> B) TRY CATCH is used to encrypt data.</label><br>
+                <label><input type="radio" name="q13" value="C"> C) TRY CATCH is used to back up data.</label><br>
+                <label><input type="radio" name="q13" value="D"> D) TRY CATCH is used to restore data.</label><br>
+            </div>
+
+            <div class="question">
+                <p>14. What are the different SQL function control categories?</p>
+                <label><input type="radio" name="q14" value="A"> A) Scalar, Aggregate, Table-valued, Set functions.</label><br>
+                <label><input type="radio" name="q14" value="B"> B) SQL, NoSQL, JSON, XML functions.</label><br>
+                <label><input type="radio" name="q14" value="C"> C) SELECT, INSERT, UPDATE, DELETE functions.</label><br>
+                <label><input type="radio" name="q14" value="D"> D) DDL, DML, DCL, TCL functions.</label><br>
+            </div>
+
+            <div class="question">
+                <p>15. Explain the concept of a correlated subquery and provide an example.</p>
+                <label><input type="radio" name="q15" value="A"> A) A correlated subquery relies on information from the outer query.</label><br>
+                <label><input type="radio" name="q15" value="B"> B) A correlated subquery is a type of join.</label><br>
+                <label><input type="radio" name="q15" value="C"> C) A correlated subquery is used for data backup.</label><br>
+                <label><input type="radio" name="q15" value="D"> D) A correlated subquery is used to delete data.</label><br>
+            </div>
+
+            <button type="button" id="submit">Next</button>
         </form>
 
         <div id="result"></div>
     </div>
 
     <script>
-        document.getElementById('submit').onclick = function() {
-            var correct = 0;
+        const questions = document.querySelectorAll('.question');
+        const progressBarFill = document.getElementById('progress-bar-fill');
+        let currentQuestion = 0;
 
-            // Question 1
+        document.getElementById('submit').onclick = function() {
+            if (currentQuestion < questions.length - 1) {
+                questions[currentQuestion].classList.remove('show');
+                currentQuestion++;
+                questions[currentQuestion].classList.add('show');
+                
+                progressBarFill.style.width = ((currentQuestion + 1) / questions.length) * 100 + '%';
+
+                if (currentQuestion === questions.length - 1) {
+                    this.textContent = 'Submit';
+                }
+            } else {
+                calculateScore();
+            }
+        };
+
+        function calculateScore() {
+            let correct = 0;
+
             if (document.querySelector('input[name="q1"]:checked').value === "A") {
                 correct++;
             }
 
-            // Question 2
-            if (document.querySelector('input[name="q2"]:checked').value === "B") {
+            if (document.querySelector('input[name="q2"]:checked').value === "A") {
                 correct++;
             }
 
-            // Question 3
             if (document.querySelector('input[name="q3"]:checked').value === "B") {
                 correct++;
             }
 
-            // Add more questions as needed
+            if (document.querySelector('input[name="q4"]:checked').value === "A") {
+                correct++;
+            }
 
-            var totalQuestions = 3; // Update this as you add more questions
-            var percentage = (correct / totalQuestions) * 100;
-            var grade = '';
+            if (document.querySelector('input[name="q5"]:checked').value === "B") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q6"]:checked').value === "A") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q7"]:checked').value === "A") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q8"]:checked').value === "A") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q9"]:checked').value === "A") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q10"]:checked').value === "A") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q11"]:checked').value === "A") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q12"]:checked').value === "A") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q13"]:checked').value === "A") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q14"]:checked').value === "A") {
+                correct++;
+            }
+
+            if (document.querySelector('input[name="q15"]:checked').value === "A") {
+                correct++;
+            }
+
+            const totalQuestions = questions.length;
+            const percentage = (correct / totalQuestions) * 100;
+            let grade = '';
 
             if (percentage >= 90) {
                 grade = 'A';
@@ -135,9 +330,18 @@
                 grade = 'F';
             }
 
-            var result = "You got " + correct + " out of " + totalQuestions + " correct (" + percentage.toFixed(2) + "%). Your grade is: " + grade;
+            const result = `You got ${correct} out of ${totalQuestions} correct (${percentage.toFixed(2)}%). Your grade is: ${grade}`;
             document.getElementById('result').innerText = result;
+            document.getElementById('result').style.display = 'block';
+
+            document.getElementById('quizForm').style.display = 'none';
+            progressBarFill.style.width = '100%';
         }
+
+        // Show the container with an animation
+        window.onload = function() {
+            document.querySelector('.container').classList.add('show');
+        };
     </script>
 </body>
 </html>
