@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Concepts Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .question input {
+            margin-right: 10px;
+        }
+        #submit {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        #submit:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SQL Concepts Quiz</h1>
+        
+        <form id="quizForm">
+            <div class="question">
+                <p>1. What is data integrity, and why is it important in a database?</p>
+                <input type="radio" name="q1" value="A"> A) Ensures that data is consistent and reliable over time.<br>
+                <input type="radio" name="q1" value="B"> B) Prevents unauthorized access to data.<br>
+                <input type="radio" name="q1" value="C"> C) Helps with data compression.<br>
+                <input type="radio" name="q1" value="D"> D) Manages user permissions.<br>
+            </div>
+            
+            <div class="question">
+                <p>2. Explain referential integrity and its role in a relational database.</p>
+                <input type="radio" name="q2" value="A"> A) Allows duplicate records in a table.<br>
+                <input type="radio" name="q2" value="B"> B) Ensures that relationships between tables remain consistent.<br>
+                <input type="radio" name="q2" value="C"> C) Controls user access to data.<br>
+                <input type="radio" name="q2" value="D"> D) Automatically backs up the database.<br>
+            </div>
+            
+            <div class="question">
+                <p>3. What is entity integrity, and how is it enforced?</p>
+                <input type="radio" name="q3" value="A"> A) Prevents duplicate entries in a column.<br>
+                <input type="radio" name="q3" value="B"> B) Ensures each row in a table has a unique, non-null primary key.<br>
+                <input type="radio" name="q3" value="C"> C) Automatically updates foreign keys.<br>
+                <input type="radio" name="q3" value="D"> D) Limits the number of columns in a table.<br>
+            </div>
+
+            <!-- Add more questions as needed -->
+
+            <button type="button" id="submit">Submit</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('submit').onclick = function() {
+            var correct = 0;
+
+            // Question 1
+            if (document.querySelector('input[name="q1"]:checked').value === "A") {
+                correct++;
+            }
+
+            // Question 2
+            if (document.querySelector('input[name="q2"]:checked').value === "B") {
+                correct++;
+            }
+
+            // Question 3
+            if (document.querySelector('input[name="q3"]:checked').value === "B") {
+                correct++;
+            }
+
+            // Add more questions as needed
+
+            var totalQuestions = 3; // Update this as you add more questions
+            var percentage = (correct / totalQuestions) * 100;
+            var grade = '';
+
+            if (percentage >= 90) {
+                grade = 'A';
+            } else if (percentage >= 80) {
+                grade = 'B';
+            } else if (percentage >= 70) {
+                grade = 'C';
+            } else if (percentage >= 60) {
+                grade = 'D';
+            } else {
+                grade = 'F';
+            }
+
+            var result = "You got " + correct + " out of " + totalQuestions + " correct (" + percentage.toFixed(2) + "%). Your grade is: " + grade;
+            document.getElementById('result').innerText = result;
+        }
+    </script>
+</body>
+</html>
